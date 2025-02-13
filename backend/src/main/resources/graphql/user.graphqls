@@ -1,0 +1,26 @@
+extend type Query {
+    hasUser:Boolean
+    readUser(id: Int!): User
+}
+
+extend type Mutation {
+    createUser(input: CreateUserInput!) : User
+    changePassword(input: ChangePasswordInput!) : Boolean
+}
+
+type User {
+    id: Int!
+    login: String!
+}
+
+input CreateUserInput {
+    login: String!
+    password:String!
+    passwordConfirmation:String!
+}
+
+input ChangePasswordInput {
+    id: Int!
+    currentPassword: String!
+    newPassword:String!
+}

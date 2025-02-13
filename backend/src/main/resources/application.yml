@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: backend
+  sql:
+    init:
+      mode: always
+  datasource:
+    driver-class-name: org.hsqldb.jdbcDriver
+    url: jdbc:hsqldb:file:/mnt/disk/projects/uptime-owlet/backend/owlet.data
+    username: sa
+  graphql:
+    graphiql:
+      enabled: true
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: TRACE
+

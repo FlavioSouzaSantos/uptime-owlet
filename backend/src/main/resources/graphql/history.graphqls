@@ -1,0 +1,9 @@
+type History {
+    id: Int
+    dateTime: DateTime!
+    httpResponseCode: Int!
+    pingTime: Int!
+    message: String
+    active: Boolean!
+    client: Client
+}

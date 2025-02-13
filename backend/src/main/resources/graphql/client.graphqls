@@ -1,0 +1,33 @@
+extend type Query {
+    readClient(id: Int!): Client
+}
+
+extend type Mutation {
+    createClient(input: ClientInput!) : Client
+    updateClient(id: Int!, input: ClientInput!) : Client
+    deleteClient(id: Int!) : Boolean
+}
+
+type Client {
+    id: Int!
+    url: String
+    method: String
+    name: String
+    httpCodeForCheckIfServiceIsActive: Int!
+    checkPeriod: Int!
+    timeoutConnection: Int!
+    maxFailureForCheckIfServiceIsInactive: Int!
+    periodForNewCheckAfterFailure:Int!
+    groupId: Int
+}
+
+input ClientInput {
+    url: String!
+    method: String!
+    name: String!
+    httpCodeForCheckIfServiceIsActive: Int!
+    checkPeriod: Int!
+    timeoutConnection: Int!
+    maxFailureForCheckIfServiceIsInactive: Int!
+    periodForNewCheckAfterFailure:Int!
+}

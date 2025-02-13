@@ -1,0 +1,14 @@
+extend type Query {
+    readGroup(id: Int!): Group
+}
+
+extend type Mutation {
+    createGroup(name: String!) : Client
+    updateGroup(id: Int!, name: String!) : Client
+    deleteGroup(id: Int!) : Boolean
+}
+
+type Group {
+    id: Int!
+    name: String!
+}
