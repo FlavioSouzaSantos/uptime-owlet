@@ -1,9 +1,12 @@
 package br.com.uptimeowlet.backend.controllers;
 
 import br.com.uptimeowlet.backend.models.Group;
+import br.com.uptimeowlet.backend.models.PageResultGroup;
+import br.com.uptimeowlet.backend.records.PageRequestInput;
 import br.com.uptimeowlet.backend.services.CrudService;
 import br.com.uptimeowlet.backend.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -15,7 +18,7 @@ public class GroupController implements CrudController<Group, Integer, String> {
 
     @Override
     @MutationMapping("createGroup")
-    public Group create(String name) {
+    public Group create(@Argument String name) {
         var group = Group.builder()
                 .name(name)
                 .build();
@@ -25,13 +28,13 @@ public class GroupController implements CrudController<Group, Integer, String> {
 
     @Override
     @QueryMapping("readGroup")
-    public Group read(Integer id) {
+    public Group read(@Argument Integer id) {
         return service.read(id);
     }
 
     @Override
     @MutationMapping("updateGroup")
-    public Group update(Integer id, String name) {
+    public Group update(@Argument Integer id, @Argument String name) {
         var group = Group.builder()
                 .id(id)
                 .name(name)
@@ -42,9 +45,14 @@ public class GroupController implements CrudController<Group, Integer, String> {
 
     @Override
     @MutationMapping("deleteGroup")
-    public boolean delete(Integer id) {
+    public boolean delete(@Argument Integer id) {
         service.delete(id);
         return true;
+    }
+
+    @QueryMapping
+    public PageResultGroup searchGroup(@Argument PageRequestInput input) {
+        return service.searchGroup(input);
     }
 
     @Override

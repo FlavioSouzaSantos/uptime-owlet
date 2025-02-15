@@ -1,14 +1,22 @@
 extend type Query {
     readGroup(id: Int!): Group
+    searchGroup(input: PageRequestInput):PageResultGroup
 }
 
 extend type Mutation {
-    createGroup(name: String!) : Client
-    updateGroup(id: Int!, name: String!) : Client
+    createGroup(name: String!) : Group
+    updateGroup(id: Int!, name: String!) : Group
     deleteGroup(id: Int!) : Boolean
 }
 
 type Group {
     id: Int!
     name: String!
+}
+
+type PageResultGroup implements PageResult{
+    content: [Group]
+    currentPage: Int!
+    totalPages: Int!
+    pageSize: Int!
 }

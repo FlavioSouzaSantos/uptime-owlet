@@ -4,4 +4,18 @@ type Query {
 type Mutation {
 }
 
+interface PageResult {
+    currentPage: Int!
+    pageSize: Int!
+    totalPages: Int!
+}
+
+input PageRequestInput {
+    search: String
+    sortField: String
+    descOrdering: Boolean
+    pageNumber: Int!
+    pageSize: Int!
+}
+
 scalar DateTime
