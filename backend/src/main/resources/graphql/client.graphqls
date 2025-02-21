@@ -14,10 +14,10 @@ type Client {
     method: String
     name: String
     httpCodeForCheckIfServiceIsActive: Int!
-    checkPeriod: Int!
-    timeoutConnection: Int!
+    checkPeriod: Long!
+    timeoutConnection: Long!
     maxFailureForCheckIfServiceIsInactive: Int!
-    periodForNewCheckAfterFailure:Int!
+    periodForNewCheckAfterFailure:Long!
     groupId: Int
 }
 

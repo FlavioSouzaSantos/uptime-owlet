@@ -65,6 +65,6 @@ public class Configuration implements WebMvcConfigurer {
 
     @Bean
     public RuntimeWiringConfigurer runtimeWiringConfigurer(){
-        return wiringBuilder -> wiringBuilder.scalar(ExtendedScalars.DateTime);
+        return wiringBuilder -> wiringBuilder.scalar(ExtendedScalars.DateTime).scalar(ExtendedScalars.GraphQLLong);
     }
 }

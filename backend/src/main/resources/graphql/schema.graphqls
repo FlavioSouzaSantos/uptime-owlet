@@ -19,3 +19,4 @@ input PageRequestInput {
 }
 
 scalar DateTime
+scalar Long
