@@ -6,6 +6,8 @@ import br.com.uptimeowlet.backend.repositories.HistoryRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,5 +20,10 @@ public class HistoryService extends CrudService<History, Integer> {
 
         var page = ((HistoryRepository) repository).findAllByClientId(client.getId(), pageable);
         return page.toList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteByClientId(int clientId){
+        ((HistoryRepository) repository).deleteAllByClientId(clientId);
     }
 }
