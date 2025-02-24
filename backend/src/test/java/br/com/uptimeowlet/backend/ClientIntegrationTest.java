@@ -73,7 +73,7 @@ class ClientIntegrationTest {
 		assertFalse(client.checkIfServiceIsInactive(histories));
 
 		var nextCheckDateTime = client.calculateNewCheck(histories);
-		assertEquals(histories.getLast().getEndDateTime().plusSeconds(client.getCheckPeriod()/60),
+		assertEquals(histories.getFirst().getEndDateTime().plusSeconds(client.getCheckPeriod()/1000),
 				nextCheckDateTime);
 
 		client.setMethod(HttpMethod.POST.name());
@@ -83,7 +83,7 @@ class ClientIntegrationTest {
 		assertTrue(client.checkIfServiceIsInactive(histories));
 
 		nextCheckDateTime = client.calculateNewCheck(histories);
-		assertEquals(histories.getLast().getEndDateTime().plusSeconds(client.getPeriodForNewCheckAfterFailure()/60),
+		assertEquals(histories.getFirst().getEndDateTime().plusSeconds(client.getPeriodForNewCheckAfterFailure()/1000),
 				nextCheckDateTime);
 	}
 

@@ -41,6 +41,6 @@ public class History {
     }
 
     public LocalDateTime getEndDateTime() {
-        return dateTime != null && pingTime > 0L ? dateTime.plusSeconds(pingTime/60) : dateTime;
+        return dateTime != null && pingTime > 0L ? dateTime.plusSeconds(pingTime/1000) : dateTime;
     }
 }

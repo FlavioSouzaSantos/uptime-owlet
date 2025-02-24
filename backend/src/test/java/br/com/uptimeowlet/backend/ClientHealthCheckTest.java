@@ -100,7 +100,7 @@ public class ClientHealthCheckTest {
                 new History(client, startTime.plusMinutes(4L), true)
         );
 
-        assertEquals(startTime.plusMinutes(4L).plusSeconds(client.getCheckPeriod()/60),
+        assertEquals(startTime.plusMinutes(1L).plusSeconds(client.getCheckPeriod()/1000),
                 client.calculateNewCheck(histories));
 
         histories = Arrays.asList(
@@ -111,7 +111,7 @@ public class ClientHealthCheckTest {
                 new History(client, startTime.plusMinutes(5), false),
                 new History(client, startTime.plusMinutes(6), false)
         );
-        assertEquals(startTime.plusMinutes(6).plusSeconds(client.getPeriodForNewCheckAfterFailure()/60),
+        assertEquals(startTime.plusMinutes(1L).plusSeconds(client.getPeriodForNewCheckAfterFailure()/1000),
                 client.calculateNewCheck(histories));
 
         assertEquals(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),

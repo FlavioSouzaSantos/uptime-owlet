@@ -97,8 +97,8 @@ public class Client {
         if(latestHistories == null || latestHistories.isEmpty()) return LocalDateTime.now();
 
         var seconds = checkIfServiceIsInactive(latestHistories) ?
-                periodForNewCheckAfterFailure / 60 :
-                checkPeriod / 60;
-        return latestHistories.getLast().getEndDateTime().plusSeconds(seconds);
+                periodForNewCheckAfterFailure / 1000 :
+                checkPeriod / 1000;
+        return latestHistories.getFirst().getEndDateTime().plusSeconds(seconds);
     }
 }
