@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ScheduleService {
 
+    private final I18nService i18nService;
     private final ThreadPoolTaskScheduler taskScheduler;
     private final HistoryService historyService;
     private final HealthService healthService;
@@ -35,7 +36,7 @@ public class ScheduleService {
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onScheduleEvent(ClientScheduleEvent event) {
-        log.log(Level.INFO, String.format("Event received by client with ID %s and operation %s.",
+        log.log(Level.INFO, i18nService.getMessage("application.logging.info.received_schedule_event",
                 event.getClientId(), event.getOption()));
 
         switch (event.getOption()){
@@ -110,7 +111,7 @@ public class ScheduleService {
     }
 
     public void unscheduleAllTasks() {
-        log.log(Level.INFO, "Canceling all tasks before stop application.");
+        log.log(Level.INFO, i18nService.getMessage("application.logging.info.unschedule_all_tasks"));
         schedules.keySet().forEach(keyTaks -> unschedule(keyTaks, true));
     }
 }

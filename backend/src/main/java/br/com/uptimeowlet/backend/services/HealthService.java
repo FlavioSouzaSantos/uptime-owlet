@@ -18,6 +18,7 @@ import java.util.logging.Level;
 public class HealthService {
 
     private final Validator validator;
+    private final I18nService i18nService;
     private final HistoryService historyService;
 
     @Transactional(rollbackFor = Exception.class)
@@ -28,10 +29,10 @@ public class HealthService {
 
         var history = client.checkHealth();
         if(history.isActive()){
-            log.log(Level.INFO, String.format("Health check for client ID %d did at %s with a duration %s milliseconds.",
+            log.log(Level.INFO, i18nService.getMessage("application.logging.info.health_check_success",
                     history.getClientId(), history.getDateTime(), history.getPingTime()));
         } else {
-            log.log(Level.WARNING, String.format("Health check for client ID %d failed at %s.",
+            log.log(Level.WARNING, i18nService.getMessage("application.logging.warning.health_check_failed",
                     history.getClientId(), history.getDateTime()));
         }
 
