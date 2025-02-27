@@ -3,38 +3,44 @@ package br.com.uptimeowlet.backend.tasks;
 import br.com.uptimeowlet.backend.models.Client;
 import br.com.uptimeowlet.backend.services.HealthService;
 import br.com.uptimeowlet.backend.services.HistoryService;
+import br.com.uptimeowlet.backend.services.ScheduleService;
 import lombok.extern.java.Log;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.logging.Level;
 
 @Log
 public final class HealthCheckTask implements Runnable {
+    private final String keyTask;
     private final Client client;
     private final HistoryService historyService;
     private final HealthService healthService;
-    private final ThreadPoolTaskScheduler  taskScheduler;
+    private final ScheduleService scheduleService;
 
-    public HealthCheckTask(Client client, HistoryService historyService, HealthService healthService, ThreadPoolTaskScheduler taskScheduler) {
+    public HealthCheckTask(String keyTask, Client client, HistoryService historyService, HealthService healthService, ScheduleService scheduleService) {
+        this.keyTask = keyTask;
         this.client = client;
         this.historyService = historyService;
         this.healthService = healthService;
-        this.taskScheduler = taskScheduler;
+        this.scheduleService = scheduleService;
     }
 
     @Override
     public void run() {
+        Instant startTime = null;
         try {
             healthService.check(client);
             var histories = historyService.latestByClient(client);
             var newCheck = client.calculateNewCheck(histories);
-            taskScheduler.schedule(this, newCheck.atZone(ZoneId.systemDefault()).toInstant());
+            startTime = newCheck.atZone(ZoneId.systemDefault()).toInstant();
         } catch (Exception ex){
             log.log(Level.SEVERE, ex.getMessage(), ex);
-            taskScheduler.schedule(this, LocalDateTime.now().plus(client.getCheckPeriod(), ChronoUnit.MILLIS).atZone(ZoneId.systemDefault()).toInstant());
+        } finally {
+            scheduleService.unschedule(keyTask);
+            if(startTime != null)
+                scheduleService.schedule(client.getId(), startTime);
+            else scheduleService.schedule(client.getId());
         }
     }
 }
