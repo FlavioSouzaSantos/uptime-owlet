@@ -1,6 +1,7 @@
 package br.com.uptimeowlet.backend;
 
 import br.com.uptimeowlet.backend.models.User;
+import br.com.uptimeowlet.backend.records.TokenOutput;
 import br.com.uptimeowlet.backend.repositories.UserRepository;
 import br.com.uptimeowlet.backend.services.I18nService;
 import org.junit.jupiter.api.*;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureH
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.graphql.test.tester.GraphQlTester;
 
+import java.time.ZonedDateTime;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -127,6 +129,33 @@ public class UserControllerTest {
 
     @Order(4)
     @Test
+    void shouldAuth() {
+        // language=GraphQL
+        var document = """
+        mutation auth{
+            auth(login: "admin", password: "123"){
+                type
+                value
+                key
+                expiration
+            }
+        }
+        """;
+        graphQlTester.document(document)
+                .execute()
+                .path("auth")
+                .entity(TokenOutput.class)
+                .satisfies(Assertions::assertNotNull)
+                .satisfies(p -> {
+                    assertNotNull(p.type());
+                    assertNotNull(p.value());
+                    assertNotNull(p.key());
+                    assertTrue(ZonedDateTime.now().isBefore(p.expiration()));
+                });
+    }
+
+    @Order(5)
+    @Test
     void shouldNotChangePassword() {
         var user = userRepository.findAll().iterator().next();
         // language=GraphQL
@@ -149,7 +178,7 @@ public class UserControllerTest {
                 });
     }
 
-    @Order(4)
+    @Order(5)
     @Test
     void shouldChangePassword() {
         var user = userRepository.findAll().iterator().next();

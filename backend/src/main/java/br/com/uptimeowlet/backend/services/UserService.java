@@ -4,11 +4,18 @@ import br.com.uptimeowlet.backend.exceptions.DataValidationException;
 import br.com.uptimeowlet.backend.models.User;
 import br.com.uptimeowlet.backend.records.ChangePasswordInput;
 import br.com.uptimeowlet.backend.records.CreateUserInput;
+import br.com.uptimeowlet.backend.records.TokenOutput;
+import br.com.uptimeowlet.backend.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService extends CrudService<User, Integer> {
+
+    @Autowired
+    private TokenService tokenService;
 
     @Override
     public void delete(Integer id) {
@@ -47,5 +54,14 @@ public class UserService extends CrudService<User, Integer> {
         user.setPassword(input.newPassword());
         update(user);
         return true;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public TokenOutput auth(String login, String password) {
+        var user = ((UserRepository) repository).findFirstByLogin(login);
+        if(user.isEmpty() || !user.get().getPassword().equals(password)){
+            throw new DataValidationException(i18nService.getMessage("application.auth.invalid_login_and_password"));
+        }
+        return tokenService.create(user.get());
     }
 }

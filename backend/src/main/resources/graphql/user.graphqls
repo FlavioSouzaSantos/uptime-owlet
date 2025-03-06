@@ -6,11 +6,19 @@ extend type Query {
 extend type Mutation {
     createUser(input: CreateUserInput!) : User
     changePassword(input: ChangePasswordInput!) : Boolean
+    auth(login: String!, password:String!): TokenOut
 }
 
 type User {
     id: Int!
     login: String!
+}
+
+type TokenOut {
+    type: String!
+    value: String!
+    key: String!
+    expiration: DateTime!
 }
 
 input CreateUserInput {

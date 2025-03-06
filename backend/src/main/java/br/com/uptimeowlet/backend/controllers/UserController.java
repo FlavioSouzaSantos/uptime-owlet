@@ -3,6 +3,7 @@ package br.com.uptimeowlet.backend.controllers;
 import br.com.uptimeowlet.backend.models.User;
 import br.com.uptimeowlet.backend.records.ChangePasswordInput;
 import br.com.uptimeowlet.backend.records.CreateUserInput;
+import br.com.uptimeowlet.backend.records.TokenOutput;
 import br.com.uptimeowlet.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -33,5 +34,10 @@ public class UserController {
     @MutationMapping
     public boolean changePassword(@Argument ChangePasswordInput input) {
         return service.changePassword(input);
+    }
+
+    @MutationMapping
+    public TokenOutput auth(@Argument String login, @Argument String password) {
+        return service.auth(login, password);
     }
 }

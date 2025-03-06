@@ -56,4 +56,10 @@ CREATE TABLE IF NOT EXISTS tb_user (
     login VARCHAR(255) NOT NULL,
     password VARCHAR(3000) NOT NULL,
     CONSTRAINT pk_user PRIMARY KEY (id)
-);  
+);
+
+CREATE TABLE IF NOT EXISTS tb_token (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    token_id VARCHAR(100) NOT NULL,
+    renovation_key VARCHAR(100) NOT NULL
+);

@@ -11,10 +11,17 @@ spring:
   graphql:
     graphiql:
       enabled: true
+application:
+  security:
+    jwt:
+      signature-secret: emVvMEl+eEXCo0VHfSnCo1l1cHJeVjJYX2tCRzdSb0d4R2Y/RUhGYD1jVFI2YV05bEdHZA==
+      issuer: uptime-owlet
+      type: bearer
+      lifeTime: 1800
 logging:
   level:
     org:
       springframework:
-        jdbc:
-          core: TRACE
+#        jdbc:
+#          core: TRACE
 

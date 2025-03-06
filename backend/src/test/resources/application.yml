@@ -11,6 +11,12 @@ spring:
     url: jdbc:h2:mem:owlet
     username: sa
     password: sa
+application:
+  security:
+    jwt:
+      signature-secret: emVvMEl+eEXCo0VHfSnCo1l1cHJeVjJYX2tCRzdSb0d4R2Y/RUhGYD1jVFI2YV05bEdHZA==
+      issuer: uptime-owlet
+      type: bearer
 logging:
   level:
     org:
