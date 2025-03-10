@@ -1,5 +1,6 @@
 package br.com.uptimeowlet.backend;
 
+import br.com.uptimeowlet.backend.models.Role;
 import br.com.uptimeowlet.backend.models.User;
 import br.com.uptimeowlet.backend.records.TokenOutput;
 import br.com.uptimeowlet.backend.repositories.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.graphql.test.tester.GraphQlTester;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.ZonedDateTime;
 import java.util.Random;
@@ -91,6 +93,7 @@ public class UserControllerTest {
 
     @Order(3)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldReadUser() {
         var user = userRepository.findAll().iterator().next();
         // language=GraphQL
@@ -156,6 +159,7 @@ public class UserControllerTest {
 
     @Order(5)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldNotChangePassword() {
         var user = userRepository.findAll().iterator().next();
         // language=GraphQL
@@ -180,6 +184,7 @@ public class UserControllerTest {
 
     @Order(5)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldChangePassword() {
         var user = userRepository.findAll().iterator().next();
         // language=GraphQL

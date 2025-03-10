@@ -7,12 +7,15 @@ import br.com.uptimeowlet.backend.records.CreateUserInput;
 import br.com.uptimeowlet.backend.records.TokenOutput;
 import br.com.uptimeowlet.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UserService extends CrudService<User, Integer> {
+public class UserService extends CrudService<User, Integer> implements UserDetailsService {
 
     @Autowired
     private TokenService tokenService;
@@ -63,5 +66,13 @@ public class UserService extends CrudService<User, Integer> {
             throw new DataValidationException(i18nService.getMessage("application.auth.invalid_login_and_password"));
         }
         return tokenService.create(user.get());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        var user = ((UserRepository) repository).findFirstByLogin(username);
+        if(user.isEmpty())
+            throw new UsernameNotFoundException(i18nService.getMessage("application.user.not_found"));
+        return null;
     }
 }

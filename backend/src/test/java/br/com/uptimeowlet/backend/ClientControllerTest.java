@@ -1,6 +1,7 @@
 package br.com.uptimeowlet.backend;
 
 import br.com.uptimeowlet.backend.models.Client;
+import br.com.uptimeowlet.backend.models.Role;
 import br.com.uptimeowlet.backend.records.ClientInput;
 import br.com.uptimeowlet.backend.repositories.ClientRepository;
 import org.junit.jupiter.api.*;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.graphql.test.tester.GraphQlTester;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Random;
 
@@ -24,6 +26,7 @@ public class ClientControllerTest {
 
     @Order(1)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldCreateClient() {
         var input = new ClientInput("http://localhost", "GET", "TEST",
                 200, 30000L, 60000L, 2, 60000L);
@@ -56,6 +59,7 @@ public class ClientControllerTest {
 
     @Order(2)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldReadClient() {
         var client = clientRepository.findAll().iterator().next();
 
@@ -81,6 +85,7 @@ public class ClientControllerTest {
 
     @Order(2)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldUpdateClient() {
         var client = clientRepository.findAll().iterator().next();
 
@@ -119,6 +124,7 @@ public class ClientControllerTest {
 
     @Order(3)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldDeleteClient() {
         var client = clientRepository.findAll().iterator().next();
 

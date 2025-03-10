@@ -2,12 +2,14 @@ package br.com.uptimeowlet.backend;
 
 import br.com.uptimeowlet.backend.models.Group;
 import br.com.uptimeowlet.backend.models.PageResultGroup;
+import br.com.uptimeowlet.backend.models.Role;
 import br.com.uptimeowlet.backend.repositories.GroupRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.graphql.test.tester.GraphQlTester;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Random;
 import java.util.stream.StreamSupport;
@@ -28,6 +30,7 @@ public class GroupControllerTest {
 
     @Order(1)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldCreateGroup() {
         var name = "TEST";
         // language=GraphQL
@@ -51,6 +54,7 @@ public class GroupControllerTest {
 
     @Order(2)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldReadGroup() {
         var group = groupRepository.findAll().iterator().next();
 
@@ -75,6 +79,7 @@ public class GroupControllerTest {
 
     @Order(2)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldUpdateGroup() {
         var group = groupRepository.findAll().iterator().next();
         var newName = String.format("%s_%d", group.getName(), new Random(10).nextInt());
@@ -101,6 +106,7 @@ public class GroupControllerTest {
 
     @Order(3)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldSearchGroup() {
         var groupList = StreamSupport.stream(groupRepository.findAll().spliterator(), false).toList();
         var group = groupList.getFirst();
@@ -151,6 +157,7 @@ public class GroupControllerTest {
 
     @Order(4)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldDeleteGroup() {
         var group = groupRepository.findAll().iterator().next();
 

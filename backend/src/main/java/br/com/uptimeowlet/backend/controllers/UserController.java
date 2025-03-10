@@ -1,5 +1,6 @@
 package br.com.uptimeowlet.backend.controllers;
 
+import br.com.uptimeowlet.backend.models.Role;
 import br.com.uptimeowlet.backend.models.User;
 import br.com.uptimeowlet.backend.records.ChangePasswordInput;
 import br.com.uptimeowlet.backend.records.CreateUserInput;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -22,6 +24,7 @@ public class UserController {
     }
 
     @QueryMapping
+    @PreAuthorize("hasRole('"+ Role.ADMIN +"')")
     public User readUser(@Argument Integer id){
         return service.read(id);
     }
@@ -32,6 +35,7 @@ public class UserController {
     }
 
     @MutationMapping
+    @PreAuthorize("hasRole('"+ Role.ADMIN +"')")
     public boolean changePassword(@Argument ChangePasswordInput input) {
         return service.changePassword(input);
     }

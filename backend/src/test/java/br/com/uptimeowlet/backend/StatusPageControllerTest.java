@@ -1,5 +1,6 @@
 package br.com.uptimeowlet.backend;
 
+import br.com.uptimeowlet.backend.models.Role;
 import br.com.uptimeowlet.backend.models.StatusPage;
 import br.com.uptimeowlet.backend.repositories.StatusPageRepository;
 import org.junit.jupiter.api.*;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.graphql.test.tester.GraphQlTester;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Random;
 
@@ -23,6 +25,7 @@ public class StatusPageControllerTest {
 
     @Order(1)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldCreateStatusPage() {
         var description = "TEST";
         var path = "/test";
@@ -49,6 +52,7 @@ public class StatusPageControllerTest {
 
     @Order(2)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldReadStatusPage() {
         var statusPage = statusPageRepository.findAll().iterator().next();
 
@@ -74,6 +78,7 @@ public class StatusPageControllerTest {
 
     @Order(2)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldUpdateStatusPage() {
         var statusPage = statusPageRepository.findAll().iterator().next();
         var newDescription = String.format("%s_%d", statusPage.getDescription(), new Random(10).nextInt());
@@ -102,6 +107,7 @@ public class StatusPageControllerTest {
 
     @Order(3)
     @Test
+    @WithMockUser(roles = {Role.ADMIN})
     void shouldDeleteStatusPage() {
         var statusPage = statusPageRepository.findAll().iterator().next();
 

@@ -1,4 +1,4 @@
-package br.com.uptimeowlet.backend;
+package br.com.uptimeowlet.backend.resolvers;
 
 import br.com.uptimeowlet.backend.exceptions.DataValidationException;
 import graphql.GraphQLError;

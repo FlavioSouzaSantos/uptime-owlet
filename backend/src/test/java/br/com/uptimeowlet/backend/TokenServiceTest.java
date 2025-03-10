@@ -71,7 +71,7 @@ public class TokenServiceTest {
         var token = tokenService.create(user);
         assertNotNull(token);
         Thread.sleep(Duration.ofSeconds(2));
-        var expired = tokenService.checkIfExpired(token);
+        var expired = tokenService.checkIfExpired(token.value());
         assertTrue(expired);
     }
 
@@ -80,7 +80,7 @@ public class TokenServiceTest {
     void shouldNotExpiredToken() {
         var token = tokenService.create(user);
         assertNotNull(token);
-        assertFalse(tokenService.checkIfExpired(token));
+        assertFalse(tokenService.checkIfExpired(token.value()));
     }
 
     @Order(1)

@@ -1,5 +1,6 @@
 package br.com.uptimeowlet.backend.controllers;
 
+import br.com.uptimeowlet.backend.models.Role;
 import br.com.uptimeowlet.backend.models.Client;
 import br.com.uptimeowlet.backend.records.ClientInput;
 import br.com.uptimeowlet.backend.services.ClientService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -16,6 +18,7 @@ public class ClientController implements CrudController<Client, Integer, ClientI
     private ClientService service;
 
     @Override
+    @PreAuthorize("hasRole('"+ Role.ADMIN +"')")
     @MutationMapping("createClient")
     public Client create(@Argument ClientInput input) {
         var client = Client.builder()
@@ -32,12 +35,14 @@ public class ClientController implements CrudController<Client, Integer, ClientI
     }
 
     @Override
+    @PreAuthorize("hasRole('"+ Role.ADMIN +"')")
     @QueryMapping("readClient")
     public Client read(@Argument Integer id) {
         return service.read(id);
     }
 
     @Override
+    @PreAuthorize("hasRole('"+ Role.ADMIN +"')")
     @MutationMapping("updateClient")
     public Client update(@Argument Integer id, @Argument ClientInput input) {
         var client = Client.builder()
@@ -55,6 +60,7 @@ public class ClientController implements CrudController<Client, Integer, ClientI
     }
 
     @Override
+    @PreAuthorize("hasRole('"+ Role.ADMIN +"')")
     @MutationMapping("deleteClient")
     public boolean delete(@Argument Integer id) {
         service.delete(id);

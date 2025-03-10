@@ -1,12 +1,11 @@
-package br.com.uptimeowlet.backend;
+package br.com.uptimeowlet.backend.configs;
 
-import graphql.scalars.ExtendedScalars;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -19,8 +18,8 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.Locale;
 
-@org.springframework.context.annotation.Configuration
-public class Configuration implements WebMvcConfigurer {
+@Configuration
+public class WebConfiguration implements WebMvcConfigurer {
 
     @Bean
     public LocaleResolver localeResolver() {
@@ -62,13 +61,6 @@ public class Configuration implements WebMvcConfigurer {
     @Primary
     public Validator validator() {
         return getLocalValidatorFactoryBean();
-    }
-
-    @Bean
-    public RuntimeWiringConfigurer runtimeWiringConfigurer(){
-        return wiringBuilder -> wiringBuilder
-                .scalar(ExtendedScalars.DateTime)
-                .scalar(ExtendedScalars.GraphQLLong);
     }
 
     @Bean

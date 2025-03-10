@@ -77,9 +77,9 @@ public class TokenService {
                 HS256.getJcaName());
     }
 
-    public boolean checkIfExpired(TokenOutput tokenOutput) {
+    public boolean checkIfExpired(String token) {
         try {
-            getClaims(tokenOutput.value(), false);
+            getClaims(token, false);
             return false;
         } catch (ExpiredJwtException ex){
             return true;
@@ -117,5 +117,10 @@ public class TokenService {
                 return ((ExpiredJwtException) ex).getClaims();
             throw ex;
         }
+    }
+
+    public String extractLogin(String jwt) {
+        var claims = getClaims(jwt, false);
+        return claims.getSubject();
     }
 }
